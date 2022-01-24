@@ -11,3 +11,6 @@ resources:
   - namespace.yaml
 
 namespace: dev
+
+patchesStrategicMerge:
+  - deploy.yaml
