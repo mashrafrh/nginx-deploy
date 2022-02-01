@@ -28,7 +28,6 @@ metadata:
   labels:
     app: nginx
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: http
     port: 80
