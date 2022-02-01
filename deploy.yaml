@@ -1,31 +1,40 @@
-apiVersion: apps/v1
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: frontend-deployment
+  name: nginx
 spec:
+  strategy:
+    type: Recreate
   selector:
-  matchLabels:
-    app: frontend-deployment
-  template:
-  metadata:
-    labels:
-      app: frontend-deployment
-  spec:
-    containers:
-    - name: app
-      image: foo/bar:latest
-      ports:
-      - name: http
-        containerPort: 8080
-        protocol: TCP
+    matchLabels:
+      app: nginx
+  replicas: 3 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-service
+  name: nginx
+  namespace: default
+  labels:
+    app: nginx
 spec:
+  externalTrafficPolicy: Local
   ports:
   - name: http
-    port: 8080
+    port: 80
+    protocol: TCP
+    targetPort: 80
   selector:
-  app: frontend-deployment
+    app: nginx
+  type: LoadBalancer
