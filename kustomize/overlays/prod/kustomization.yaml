@@ -13,4 +13,4 @@ resources:
 namespace: prod
 
 patchesStrategicMerge:
-  - deploy.yaml
+  - patch.yaml
